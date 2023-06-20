@@ -1,0 +1,9 @@
+{
+    "source_path": "../protos",
+    "list":[
+        {
+            "name": "game_event",
+            "output":"./output"
+        }
+    ]
+}
