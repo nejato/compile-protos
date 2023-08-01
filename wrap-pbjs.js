@@ -1,3 +1,4 @@
+
 (window || global).game_event = (function($protobuf) {
     "use strict";
 

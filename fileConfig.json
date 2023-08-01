@@ -3,7 +3,11 @@
     "list":[
         {
             "name": "game_event",
-            "output":"./output"
+            "output":"../Test/protos"
+        },
+        {
+            "name": "master_event",
+            "output":"../Test/protos"
         }
     ]
 }

@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build-protos": "node ./build-protos.js && node ./wrap-pbts",
+    "proto-build": "node ./build-proto.js",
+    "build-protos": "node ./build-protos.js",
     "build-proto": "npm run build-proto:pbjs && npm run build-proto:pbts",
     "build-proto:pbjs": "pbjs --target static-module --wrap ./wrap-pbjs.js --out ./output/game_event.js ../protos/game_event.proto",
     "build-proto:pbts": "pbts --main --out ./output/game_event.d.ts ./output/game_event.js && node ./wrap-pbts"

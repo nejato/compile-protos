@@ -3,10 +3,10 @@ import fs from 'fs-extra';
 import ps from 'path'
 
 (async () => {
-    const file = ps.join("output", 'game_event.d.ts');
-    const original = await fs.readFile(file, 'utf-8');
+    const filePath = ps.join("..", "Test","protos", 'game_event.d.ts');
+    const original = await fs.readFile(filePath, 'utf-8');
     await fs.writeFile(
-        file,
+        filePath,
         `declare global {\n ${original} \n} \n export {}`,
     );
 })();

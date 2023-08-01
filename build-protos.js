@@ -22,10 +22,23 @@ import fs from "fs-extra";
         fs.writeFileSync(djsFilePath, "");
       }
       pbjs.main(
-        ["--target", "static-module", "--wrap", "./wrap-pbjs.js", "--out", djsFilePath, fileSourcePath],
+        ["--target", "static-module", "--wrap", "./wrap-pbjs-unglobal.js", "--out", djsFilePath, fileSourcePath],
         (err) => {
           if (!err) {
-            pbts.main(["--main", "--out", dtsFilePath, djsFilePath]);
+            pbts.main(["--main", "--out", dtsFilePath, djsFilePath], (err1) => {
+              if (!err1) {
+                (async () => {
+                  const filePath = dtsFilePath;// ps.join("..", "Test", "protos", item.name+ ".d.ts");
+                  const original = await fs.readFile(filePath, "utf-8");
+                  await fs.writeFile(filePath, 
+                    `declare global {${original} \n} \n export {}`);
+                })();
+              }else{
+                console.log("Error in pbts command");
+              }
+            });
+          }else{
+            console.log("Err : ", err)
           }
         }
       );
