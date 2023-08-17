@@ -1,13 +1,21 @@
 {
-    "source_path": "../protos",
+    "source_path": "../../protos",
     "list":[
         {
             "name": "game_event",
-            "output":"../Test/protos"
+            "output":"../../assets/scripts/protos/"
         },
         {
             "name": "master_event",
-            "output":"../Test/protos"
+            "output":"../../assets/scripts/protos/"
+        },
+        {
+            "name": "bandarqq_event",
+            "output":"../../assets/scripts/protos/"
+        },
+        {
+            "name": "domino_event",
+            "output":"../../assets/scripts/protos/"
         }
     ]
 }

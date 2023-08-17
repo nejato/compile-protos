@@ -5,9 +5,12 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "proto-build": "node ./build-proto.js",
+    "build-proto": "node ./build-proto.js",
     "build-protos": "node ./build-protos.js",
-    "build-proto": "npm run build-proto:pbjs && npm run build-proto:pbts",
+    "build-proto-test": "npm run build-protojs && npm run build-protots",
+    "build-protojs": "pbjs --target static-module --wrap default -n domino_event --out ./output/domino_event.js ../../protos/domino_event.proto",
+    "build-protots": "pbts --main --out ./output/domino_event.d.ts ./output/domino_event.js",
+    "build-proto-base": "npm run build-proto:pbjs && npm run build-proto:pbts",
     "build-proto:pbjs": "pbjs --target static-module --wrap ./wrap-pbjs.js --out ./output/game_event.js ../protos/game_event.proto",
     "build-proto:pbts": "pbts --main --out ./output/game_event.d.ts ./output/game_event.js && node ./wrap-pbts"
   },

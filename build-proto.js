@@ -15,7 +15,7 @@ import { argv } from "process";
     if(!item){
         console.error("file dont exist");
     }
-    let fileSourcePath = ps.join(sourcePath, item.name + ".proto");
+    let fileSourcePath =  ps.join(item?.source || sourcePath, item.name + ".proto");
     if (fs.existsSync(fileSourcePath)) {
         let dtsFilePath = ps.join(item.output, item.name + ".d.ts");
         if (!fs.existsSync(dtsFilePath)) {
@@ -26,20 +26,28 @@ import { argv } from "process";
             fs.writeFileSync(djsFilePath, "");
         }
         pbjs.main(
-            ["--target", "static-module", "--wrap", "./wrap-pbjs-unglobal.js", "--out", djsFilePath, fileSourcePath],
+            ["--target", "static-module", "--wrap", "./wrap-pbjs.js", "--out", djsFilePath, fileSourcePath],
             (err) => {
                 if (!err) {
-                    pbts.main(["--main", "--out", dtsFilePath, djsFilePath], (err1) => {
-                        if (!err1) {
-                            (async () => {
-                                const filePath = dtsFilePath; // ps.join("..", "Test", "protos", item.name+ ".d.ts");
-                                const original = await fs.readFile(filePath, "utf-8");
-                                await fs.writeFile(filePath, `declare global {${original} \n} \n export {}`);
-                            })();
-                        } else {
-                            console.log("Error in pbts command");
-                        }
-                    });
+                    (async () => {
+                        const filePath = djsFilePath; // ps.join("..", "Test", "protos", item.name+ ".d.ts");
+                        const original = await fs.readFile(filePath, "utf-8");
+                        await fs.writeFile(filePath, 
+                            `${original.replaceAll("abc_xyz_event", item.name)}`
+                            );
+                        pbts.main(["--main", "--out", dtsFilePath, djsFilePath], (err1) => {
+                            if (!err1) {
+                                (async () => {
+                                    const filePath = dtsFilePath; // ps.join("..", "Test", "protos", item.name+ ".d.ts");
+                                    const original = await fs.readFile(filePath, "utf-8");
+                                    await fs.writeFile(filePath, `declare global {\n ${original} \n} \n export {}`);
+                                })();
+                            } else {
+                                console.log("Error in pbts command");
+                            }
+                        });
+                    })();
+                    
                 } else {
                     console.log("Err : ", err);
                 }
